@@ -7,15 +7,19 @@
 
 <script lang="ts">
 import { defineComponent } from "@vue/runtime-core";
-import { login } from "./../api/index";
+import { getList } from "./../api/index";
+import { GetListPage, GetList } from "./../modal/getListType";
 export default defineComponent({
   setup() {
     async function loginUser() {
-      const res = await login({
-        userName: "111",
-        pwd: "222",
+      const res: GetListPage = await getList({
+        page: 1,
+        pageSize: 10,
       });
-      console.log(res);
+      if (res !== null) {
+        const list: Array<GetList> = res.pagedata.records;
+        console.log(list[0].id);
+      }
     }
     return {
       loginUser,
