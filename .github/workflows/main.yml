@@ -9,10 +9,10 @@ jobs:
       uses: actions/checkout@main # 将代码拷贝到虚机中
       with:
         persist-credentials: false
-    # - name: installNode
-    #     uses: actions/setup-node@v1
-    #     with:
-    #       node-version: "12.x"
+    - name: setup-node
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
     - name: buildAndDeploy
       uses: JamesIves/github-pages-deploy-action@4.1.4
       env:
