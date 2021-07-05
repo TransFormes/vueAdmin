@@ -9,7 +9,7 @@ jobs:
       uses: actions/checkout@main # 将代码拷贝到虚机中
       with:
         persist-credentials: false
-    - name: Setup node
+    - name: installNode
         uses: actions/setup-node@v1
         with:
           node-version: "12.x"
