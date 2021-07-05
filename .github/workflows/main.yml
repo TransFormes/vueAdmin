@@ -7,6 +7,8 @@ jobs:
     steps:
     - name: checkout
       uses: actions/checkout@main # 将代码拷贝到虚机中
+      with:
+        persist-credentials: false
 
     - name: buildAndDeploy
       uses: JamesIves/github-pages-deploy-action@4.1.4
