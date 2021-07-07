@@ -2,6 +2,7 @@
   <div class="about">
     <h1>This is an about page</h1>
     <button @click="loginUser">loading</button>
+    <button @click="file">file</button>
   </div>
 </template>
 
@@ -12,7 +13,7 @@ import { GetListPage, GetList } from "./../modal/getListType";
 export default defineComponent({
   setup() {
     async function loginUser() {
-      const res: GetListPage = await getList({
+      const res: GetListPage | null = await getList({
         page: 1,
         pageSize: 10,
       });
@@ -21,8 +22,17 @@ export default defineComponent({
         console.log(list[0].id);
       }
     }
+    function file(e: InputEvent): void {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const file = e.target!;
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      const files = file.files as FileList;
+      console.log(files.item(0));
+    }
     return {
       loginUser,
+      file,
     };
   },
 });

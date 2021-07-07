@@ -52,7 +52,7 @@ export default function request<T>(
   method: Method,
   data: unknown,
   responseType: AxiosRequestConfig["responseType"] = "json"
-): Promise<T> {
+): Promise<T | null> {
   return new Promise((resolve, reject) => {
     const options: AxiosRequestConfig = {
       url,
