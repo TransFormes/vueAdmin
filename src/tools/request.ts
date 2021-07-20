@@ -1,4 +1,4 @@
-import axios, { Method, AxiosRequestConfig } from "axios";
+import axios, { Method, AxiosRequestConfig, AxiosResponse } from "axios";
 import { ResponseCode } from "./requestType";
 import { ElMessage } from "element-plus";
 
@@ -10,8 +10,8 @@ interface PenddingUrl {
 export const intance = axios.create({
   baseURL:
     process.env.NODE_ENV === "development"
-      ? "https://www.xuanfuai.com/"
-      : "https://www.xuanfuai.com/",
+      ? "https://www.baidu.com/"
+      : "https://www.baidu.com/",
   // timeout: 10000,
   headers: {
     "content-type": "application/x-www-form-urlencoded",
@@ -31,8 +31,7 @@ const CancelToken = axios.CancelToken;
 
 intance.interceptors.request.use(
   (conf) => {
-    // conf.headers["token"] = sessionStorage.getItem("token");
-    conf.headers["token"] = "pc|std|c63aee9559de4fd0926c";
+    conf.headers["token"] = sessionStorage.getItem("token");
     emovePending(conf.url);
     conf.cancelToken = new CancelToken((c) => {
       pendingUrl.push({
@@ -46,6 +45,30 @@ intance.interceptors.request.use(
     console.log(err);
   }
 );
+
+async function getToken(): Promise<boolean> {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true);
+    }, 2000);
+  });
+}
+
+intance.interceptors.response.use(async (response) => {
+  //身份过期 自动重新登录
+  if (response.data.code === -1) {
+    await getToken();
+    const req = await request(
+      response.config.url as string,
+      response.config.method as Method,
+      response.config.data
+    );
+    if (req) {
+      return req as AxiosResponse<unknown>;
+    }
+  }
+  return response;
+});
 
 export default function request<T>(
   url: string,
